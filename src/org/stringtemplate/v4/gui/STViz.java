@@ -126,9 +126,9 @@ public class STViz {
                     }
 
                     TreePath path = treeSelectionEvent.getNewLeadSelectionPath();
-                    if ( path==null ) {
+                    if ( path==null )
                         return;
-                    }
+
                     CommonTree node = (CommonTree)treeSelectionEvent.getNewLeadSelectionPath().getLastPathComponent();
                     //System.out.println("select AST: "+node);
                     CommonToken a = (CommonToken)currentScope.st.impl.tokens.get(node.getTokenStartIndex());
@@ -167,12 +167,8 @@ public class STViz {
 
                     int dot = toEventPosition((JTextComponent)e.getSource(), e.getDot());
                     currentEvent = findEventAtOutputLocation(allEvents, dot);
-                    if ( currentEvent==null ) {
-                        currentScope = tmodel.root.event.scope;
-                    }
-                    else {
-                        currentScope = currentEvent.scope;
-                    }
+                    if ( currentEvent==null ) currentScope = tmodel.root.event.scope;
+                    else currentScope = currentEvent.scope;
 
                     // update tree view of template hierarchy
                     // compute path from root to currentST, create TreePath for tree widget
@@ -221,9 +217,9 @@ public class STViz {
                     int maxIndex = viewFrame.errorList.getMaxSelectionIndex();
                     int i = minIndex;
                     while ( i<=maxIndex ) {
-                        if ( viewFrame.errorList.isSelectedIndex(i) ) {
+                        if ( viewFrame.errorList.isSelectedIndex(i) )
                             break;
-                        }
+
                         i++;
                     }
                     ListModel model = viewFrame.errorList.getModel();
@@ -465,26 +461,16 @@ public class STViz {
                 continue;
             }
 
-            if ( charIndex >= e.outputStartChar && charIndex<=e.outputStopChar ) {
-                return e;
-            }
+            if ( charIndex >= e.outputStartChar && charIndex<=e.outputStopChar ) return e;
         }
         return null;
     }
 
     public static void main(String[] args) { // test rig
-        if ( args.length>0 && args[0].equals("1") ) {
-            test1();
-        }
-        else if ( args.length>0 && args[0].equals("2") ) {
-            test2();
-        }
-        else if ( args.length>0 && args[0].equals("3") ) {
-            test3();
-        }
-        else if ( args.length>0 && args[0].equals("4") ) {
-            test4();
-        }
+        if ( args.length>0 && args[0].equals("1") ) test1();
+        else if ( args.length>0 && args[0].equals("2") ) test2();
+        else if ( args.length>0 && args[0].equals("3") ) test3();
+        else if ( args.length>0 && args[0].equals("4") ) test4();
     }
 
     public static void test1() { // test rig
@@ -560,9 +546,7 @@ public class STViz {
     public static void writeFile(String dir, String fileName, String content) {
         try {
             File f = new File(dir, fileName);
-            if ( !f.getParentFile().exists() ) {
-                f.getParentFile().mkdirs();
-            }
+            if ( !f.getParentFile().exists() ) f.getParentFile().mkdirs();
             FileWriter w = new FileWriter(f);
             BufferedWriter bw = new BufferedWriter(w);
             bw.write(content);
