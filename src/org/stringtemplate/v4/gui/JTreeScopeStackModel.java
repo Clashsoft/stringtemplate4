@@ -43,15 +43,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-/** From a scope, get stack of enclosing scopes in order from root down
- *  to scope.  Then show each scope's (ST's) attributes as children.
+/**
+ * From a scope, get stack of enclosing scopes in order from root down
+ * to scope.  Then show each scope's (ST's) attributes as children.
  */
 public class JTreeScopeStackModel implements TreeModel {
     CommonTree root;
 
     public static class StringTree extends CommonTree {
         String text;
-        public StringTree(String text) {this.text = text;}
+
+        public StringTree(String text) {
+            this.text = text;
+        }
 
         @Override
         public boolean isNil() {
@@ -61,7 +65,7 @@ public class JTreeScopeStackModel implements TreeModel {
         @Override
         public String toString() {
             if ( !isNil() ) {
-	            return text;
+                return text;
             }
             return "nil";
         }
@@ -81,9 +85,8 @@ public class JTreeScopeStackModel implements TreeModel {
 
     public void addAttributeDescriptions(ST st, StringTree node, Set<String> names) {
         Map<String, Object> attrs = st.getAttributes();
-        if ( attrs==null )
-        {
-	        return;
+        if ( attrs==null ) {
+            return;
         }
         for (String a : attrs.keySet()) {
             String descr;
@@ -93,9 +96,8 @@ public class JTreeScopeStackModel implements TreeModel {
                 int i = 0;
                 if ( events!=null ) {
                     for (AddAttributeEvent ae : events) {
-                        if ( i>0 )
-                        {
-	                        locations.append(", ");
+                        if ( i>0 ) {
+                            locations.append(", ");
                         }
                         locations.append(ae.getFileName()).append(":").append(ae.getLine());
                         i++;
@@ -105,22 +107,18 @@ public class JTreeScopeStackModel implements TreeModel {
                     descr = a+" = "+attrs.get(a)+" @ "+locations.toString();
                 }
                 else {
-                    descr = a + " = " +attrs.get(a);
+                    descr = a+" = "+attrs.get(a);
                 }
             }
             else {
-                descr = a + " = " +attrs.get(a);
+                descr = a+" = "+attrs.get(a);
             }
 
-            if (!names.add(a)) {
-                StringBuilder builder = new StringBuilder();
-                builder.append("<html><font color=\"gray\">");
-                builder.append(StringRenderer.escapeHTML(descr));
-                builder.append("</font></html>");
-                descr = builder.toString();
+            if ( !names.add(a) ) {
+                descr = "<html><font color=\"gray\">"+StringRenderer.escapeHTML(descr)+"</font></html>";
             }
 
-            node.addChild( new StringTree(descr) );
+            node.addChild(new StringTree(descr));
         }
     }
 
@@ -143,7 +141,7 @@ public class JTreeScopeStackModel implements TreeModel {
 
     @Override
     public boolean isLeaf(Object node) {
-        return getChildCount(node) == 0;
+        return getChildCount(node)==0;
     }
 
     @Override

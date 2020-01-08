@@ -38,11 +38,14 @@ import javax.swing.tree.TreePath;
 
 public class JTreeSTModel implements TreeModel {
     public Interpreter interp;
-    public Wrapper root;
+    public Wrapper     root;
 
     public static class Wrapper {
         EvalTemplateEvent event;
-        public Wrapper(EvalTemplateEvent event) { this.event = event; }
+
+        public Wrapper(EvalTemplateEvent event) {
+            this.event = event;
+        }
 
         @Override
         public int hashCode() {
@@ -51,23 +54,26 @@ public class JTreeSTModel implements TreeModel {
 
         @Override
         public boolean equals(Object o) {
-            if ( o == null ) {
-	            return false;
+            if ( o==null ) {
+                return false;
+            }
+            if (!(o instanceof Wrapper)) {
+                return false;
             }
             //System.out.println(event+"=="+((Wrapper)o).event+" is "+(this.event == ((Wrapper)o).event));
-            return this.event == ((Wrapper)o).event;
+            return this.event==((Wrapper)o).event;
         }
 
         @Override
         public String toString() {
             ST st = event.scope.st;
             if ( st.isAnonSubtemplate() ) {
-	            return "{...}";
+                return "{...}";
             }
             if ( st.debugState!=null && st.debugState.newSTEvent!=null ) {
-                String label = st.toString()+" @ "+st.debugState.newSTEvent.getFileName()+":"+
-                       st.debugState.newSTEvent.getLine();
-                return "<html><b>" + StringRenderer.escapeHTML(label) + "</b></html>";
+                String label =
+                    st.toString()+" @ "+st.debugState.newSTEvent.getFileName()+":"+st.debugState.newSTEvent.getLine();
+                return "<html><b>"+StringRenderer.escapeHTML(label)+"</b></html>";
             }
             else {
                 return st.toString();
@@ -98,9 +104,9 @@ public class JTreeSTModel implements TreeModel {
         EvalTemplateEvent c = ((Wrapper)parent).event;
         int i = 0;
         for (EvalTemplateEvent e : p.scope.childEvalTemplateEvents) {
-            if ( e.scope.st == c.scope.st ) {
-//              System.out.println(i);
-//              System.out.println("found "+e.self+" as child of "+parentST);
+            if ( e.scope.st==c.scope.st ) {
+                //              System.out.println(i);
+                //              System.out.println("found "+e.self+" as child of "+parentST);
                 return i;
             }
             i++;
@@ -110,11 +116,13 @@ public class JTreeSTModel implements TreeModel {
 
     @Override
     public boolean isLeaf(Object node) {
-        return getChildCount(node) == 0;
+        return getChildCount(node)==0;
     }
 
     @Override
-    public Object getRoot() { return root; }
+    public Object getRoot() {
+        return root;
+    }
 
     @Override
     public void valueForPathChanged(TreePath treePath, Object o) {

@@ -38,7 +38,7 @@ import javax.swing.tree.TreePath;
 // TODO: copied from ANTLR v4; rm when upgraded to v4
 public class JTreeASTModel implements TreeModel {
     TreeAdaptor adaptor;
-    Object root;
+    Object      root;
 
     public JTreeASTModel(TreeAdaptor adaptor, Object root) {
         this.adaptor = adaptor;
@@ -56,15 +56,15 @@ public class JTreeASTModel implements TreeModel {
     }
 
     @Override
-    public int getIndexOfChild(Object parent, Object child){
+    public int getIndexOfChild(Object parent, Object child) {
         if ( parent==null ) {
-	        return -1;
+            return -1;
         }
         return adaptor.getChildIndex(child);
     }
 
     @Override
-    public Object getChild(Object parent, int index){
+    public Object getChild(Object parent, int index) {
         return adaptor.getChild(parent, index);
     }
 
@@ -74,7 +74,9 @@ public class JTreeASTModel implements TreeModel {
     }
 
     @Override
-    public Object getRoot() { return root; }
+    public Object getRoot() {
+        return root;
+    }
 
     @Override
     public void valueForPathChanged(TreePath treePath, Object o) {
