@@ -54,7 +54,7 @@ public class JTreeSTModel implements TreeModel {
 
         @Override
         public boolean equals(Object o) {
-            if ( o==null ) {
+            if (!(oinstanceof Wrapper)) {
                 return false;
             }
             if (!(o instanceof Wrapper)) {

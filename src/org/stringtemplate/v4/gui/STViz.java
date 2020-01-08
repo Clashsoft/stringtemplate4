@@ -472,7 +472,7 @@ public class STViz {
         return null;
     }
 
-    public static void main(String[] args) throws IOException { // test rig
+    public static void main(String[] args) { // test rig
         if ( args.length>0 && args[0].equals("1") ) {
             test1();
         }
@@ -487,7 +487,7 @@ public class STViz {
         }
     }
 
-    public static void test1() throws IOException { // test rig
+    public static void test1() { // test rig
         String templates = "method(type,name,locals,args,stats) ::= <<\n"
                            +"public <type> <name>(<args:{a| int <a>}; separator=\", \">) {\n"
                            +"    <if(locals)>int locals[<locals>];<endif>\n"+"    <stats;separator=\"\\n\">\n"+"}\n"
@@ -521,7 +521,7 @@ public class STViz {
         System.out.println(st.render()); // should not mess up ST event lists
     }
 
-    public static void test2() throws IOException { // test rig
+    public static void test2() { // test rig
         String templates = "t1(q1=\"Some\\nText\") ::= <<\n"+"<q1>\n"+">>\n"+"\n"+"t2(p1) ::= <<\n"+"<p1>\n"+">>\n"+"\n"
                            +"main() ::= <<\n"+"START-<t1()>-END\n"+"\n"+"START-<t2(p1=\"Some\\nText\")>-END\n"+">>\n";
 
@@ -532,7 +532,7 @@ public class STViz {
         STViz viz = st.inspect();
     }
 
-    public static void test3() throws IOException {
+    public static void test3() {
         String templates = "main() ::= <<\n"+"Foo: <{bar};format=\"lower\">\n"+">>\n";
 
         String tmpdir = System.getProperty("java.io.tmpdir");
@@ -542,7 +542,7 @@ public class STViz {
         st.inspect();
     }
 
-    public static void test4() throws IOException {
+    public static void test4() {
         String templates =
             "main(t) ::= <<\n"+"hi: <t>\n"+">>\n"+"foo(x,y={hi}) ::= \"<bar(x,y)>\"\n"+"bar(x,y) ::= << <y> >>\n"
             +"ignore(m) ::= \"<m>\"\n";
