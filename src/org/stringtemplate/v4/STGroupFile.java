@@ -36,26 +36,34 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-/** The internal representation of a single group file (which must end in
- *  ".stg").  If we fail to find a group file, look for it via the
- *  CLASSPATH as a resource.  Templates are only looked up in this file
- *  or an import.
+/**
+ * The internal representation of a single group file (which must end in
+ * ".stg").  If we fail to find a group file, look for it via the
+ * CLASSPATH as a resource.  Templates are only looked up in this file
+ * or an import.
  */
 public class STGroupFile extends STGroup {
-    /** Just records how user "spelled" the file name they wanted to load.
-     *  The url is the key field here for loading content.
-     *
-     *  If they use ctor with URL arg, this field is null.
+    /**
+     * Just records how user "spelled" the file name they wanted to load.
+     * The url is the key field here for loading content.
+     * <p>
+     * If they use ctor with URL arg, this field is null.
      */
     public String fileName;
 
-    /** Where to find the group file. NonNull. */
+    /**
+     * Where to find the group file. NonNull.
+     */
     public URL url;
 
     protected boolean alreadyLoaded = false;
 
-    /** Load a file relative to current directory or from root or via CLASSPATH. */
-    public STGroupFile(String fileName) { this(fileName, '<', '>'); }
+    /**
+     * Load a file relative to current directory or from root or via CLASSPATH.
+     */
+    public STGroupFile(String fileName) {
+        this(fileName, '<', '>');
+    }
 
     public STGroupFile(String fileName, char delimiterStartChar, char delimiterStopChar) {
         super(delimiterStartChar, delimiterStopChar);
@@ -72,17 +80,16 @@ public class STGroupFile extends STGroup {
                 throw new STException("can't load group file "+fileName, e);
             }
             if ( verbose ) {
-                System.out.println("STGroupFile(" + fileName + ") == file "+f.getAbsolutePath());
+                System.out.println("STGroupFile("+fileName+") == file "+f.getAbsolutePath());
             }
         }
         else { // try in classpath
             url = getURL(fileName);
             if ( url==null ) {
-                throw new IllegalArgumentException("No such group file: "+
-                                                       fileName);
+                throw new IllegalArgumentException("No such group file: "+fileName);
             }
             if ( verbose ) {
-                System.out.println("STGroupFile(" + fileName + ") == url "+url);
+                System.out.println("STGroupFile("+fileName+") == url "+url);
             }
         }
         this.fileName = fileName;
@@ -92,19 +99,17 @@ public class STGroupFile extends STGroup {
         this(fullyQualifiedFileName, encoding, '<', '>');
     }
 
-    public STGroupFile(String fullyQualifiedFileName, String encoding,
-                       char delimiterStartChar, char delimiterStopChar)
-    {
+    public STGroupFile(String fullyQualifiedFileName, String encoding, char delimiterStartChar,
+        char delimiterStopChar) {
         this(fullyQualifiedFileName, delimiterStartChar, delimiterStopChar);
         this.encoding = encoding;
     }
 
-    /** Pass in a URL with the location of a group file. E.g.,
-     *  STGroup g = new STGroupFile(loader.getResource("org/foo/templates/g.stg"), "UTF-8", '<', '>');
-      */
-    public STGroupFile(URL url, String encoding,
-                       char delimiterStartChar, char delimiterStopChar)
-    {
+    /**
+     * Pass in a URL with the location of a group file. E.g.,
+     * STGroup g = new STGroupFile(loader.getResource("org/foo/templates/g.stg"), "UTF-8", '<', '>');
+     */
+    public STGroupFile(URL url, String encoding, char delimiterStartChar, char delimiterStopChar) {
         super(delimiterStartChar, delimiterStopChar);
         if ( url==null ) {
             throw new IllegalArgumentException("URL to group file cannot be null");
@@ -114,8 +119,12 @@ public class STGroupFile extends STGroup {
         this.fileName = null;
     }
 
-    /** Convenience ctor */
-    public STGroupFile(URL url) { this(url, "UTF-8",'<', '>'); }
+    /**
+     * Convenience ctor
+     */
+    public STGroupFile(URL url) {
+        this(url, "UTF-8", '<', '>');
+    }
 
     @Override
     public boolean isDictionary(String name) {
@@ -173,7 +182,9 @@ public class STGroupFile extends STGroup {
     }
 
     @Override
-    public String getName() { return Misc.getFileNameNoSuffix(getFileName()); }
+    public String getName() {
+        return Misc.getFileNameNoSuffix(getFileName());
+    }
 
     @Override
     public String getFileName() {
@@ -185,19 +196,17 @@ public class STGroupFile extends STGroup {
 
     @Override
     public URL getRootDirURL() {
-//      System.out.println("url of "+fileName+" is "+url.toString());
+        //      System.out.println("url of "+fileName+" is "+url.toString());
         String parent = Misc.stripLastPathElement(url.toString());
         if ( parent.endsWith(".jar!") ) {
-            parent = parent + "/."; // whooops. at the root so add "current dir" after jar spec
+            parent = parent+"/."; // whooops. at the root so add "current dir" after jar spec
         }
         try {
-            URL parentURL = new URL(parent);
-//          System.out.println("parent URL "+parentURL.toString());
-            return parentURL;
+            //          System.out.println("parent URL "+parent);
+            return new URL(parent);
         }
         catch (MalformedURLException mue) {
-            errMgr.runTimeError(null, null, ErrorType.INVALID_TEMPLATE_NAME,
-                                mue, parent);
+            errMgr.runTimeError(null, null, ErrorType.INVALID_TEMPLATE_NAME, mue, parent);
         }
         return null;
     }

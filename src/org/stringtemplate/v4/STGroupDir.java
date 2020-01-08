@@ -42,16 +42,19 @@ import java.net.URL;
 
 // TODO: caching?
 
-/** A directory or directory tree full of templates and/or group files.
- *  We load files on-demand. Dir search path: current working dir then
- *  CLASSPATH (as a resource).  Do not look for templates outside of this dir
- *  subtree (except via imports).
+/**
+ * A directory or directory tree full of templates and/or group files.
+ * We load files on-demand. Dir search path: current working dir then
+ * CLASSPATH (as a resource).  Do not look for templates outside of this dir
+ * subtree (except via imports).
  */
 public class STGroupDir extends STGroup {
     public String groupDirName;
-    public URL root;
+    public URL    root;
 
-    public STGroupDir(String dirName) { this(dirName, '<', '>'); }
+    public STGroupDir(String dirName) {
+        this(dirName, '<', '>');
+    }
 
     public STGroupDir(String dirName, char delimiterStartChar, char delimiterStopChar) {
         super(delimiterStartChar, delimiterStopChar);
@@ -80,8 +83,7 @@ public class STGroupDir extends STGroup {
                 System.out.println("STGroupDir("+dirName+") found via CLASSPATH at "+root);
             }
             if ( root==null ) {
-                throw new IllegalArgumentException("No such directory: "+
-                                                       dirName);
+                throw new IllegalArgumentException("No such directory: "+dirName);
             }
         }
     }
@@ -90,16 +92,12 @@ public class STGroupDir extends STGroup {
         this(dirName, encoding, '<', '>');
     }
 
-    public STGroupDir(String dirName, String encoding,
-                      char delimiterStartChar, char delimiterStopChar)
-    {
+    public STGroupDir(String dirName, String encoding, char delimiterStartChar, char delimiterStopChar) {
         this(dirName, delimiterStartChar, delimiterStopChar);
         this.encoding = encoding;
     }
 
-    public STGroupDir(URL root, String encoding,
-                      char delimiterStartChar, char delimiterStopChar)
-    {
+    public STGroupDir(URL root, String encoding, char delimiterStartChar, char delimiterStopChar) {
         super(delimiterStartChar, delimiterStopChar);
         this.groupDirName = new File(root.getFile()).getName();
         this.root = root;
@@ -108,14 +106,14 @@ public class STGroupDir extends STGroup {
 
     @Override
     public void importTemplates(Token fileNameToken) {
-        String msg =
-            "import illegal in group files embedded in STGroupDirs; "+
-            "import "+fileNameToken.getText()+" in STGroupDir "+this.getName();
+        String msg = "import illegal in group files embedded in STGroupDirs; "+"import "+fileNameToken.getText()
+                     +" in STGroupDir "+this.getName();
         throw new UnsupportedOperationException(msg);
     }
 
-    /** Load a template from directory or group file.  Group file is given
-     *  precedence over directory with same name. {@code name} is always fully-qualified.
+    /**
+     * Load a template from directory or group file.  Group file is given
+     * precedence over directory with same name. {@code name} is always fully-qualified.
      */
     @Override
     protected CompiledST load(String name) {
@@ -124,10 +122,10 @@ public class STGroupDir extends STGroup {
         }
         String parent = Misc.getParent(name); // must have parent; it's fully-qualified
         String prefix = Misc.getPrefix(name);
-//      if (parent.isEmpty()) {
-//          // no need to check for a group file as name has no parent
-//            return loadTemplateFile("/", name+TEMPLATE_FILE_EXTENSION); // load t.st file
-//      }
+        //      if (parent.isEmpty()) {
+        //          // no need to check for a group file as name has no parent
+        //            return loadTemplateFile("/", name+TEMPLATE_FILE_EXTENSION); // load t.st file
+        //      }
 
         URL groupFileURL;
         try { // see if parent of template name is a group file
@@ -149,7 +147,7 @@ public class STGroupDir extends STGroup {
         }
         finally { // clean up
             try {
-                if (is!=null ) {
+                if ( is!=null ) {
                     is.close();
                 }
             }
@@ -162,19 +160,19 @@ public class STGroupDir extends STGroup {
         return rawGetTemplate(name);
     }
 
-    /** Load .st as relative file name relative to root by {@code prefix}. */
+    /**
+     * Load .st as relative file name relative to root by {@code prefix}.
+     */
     public CompiledST loadTemplateFile(String prefix, String unqualifiedFileName) {
         if ( verbose ) {
-            System.out.println("loadTemplateFile("+unqualifiedFileName+") in groupdir "+
-                                              "from "+root+" prefix="+prefix);
+            System.out.println("loadTemplateFile("+unqualifiedFileName+") in groupdir "+"from "+root+" prefix="+prefix);
         }
         URL f;
         try {
             f = new URL(root+prefix+unqualifiedFileName);
         }
         catch (MalformedURLException me) {
-            errMgr.runTimeError(null, null, ErrorType.INVALID_TEMPLATE_NAME,
-                                me, root + unqualifiedFileName);
+            errMgr.runTimeError(null, null, ErrorType.INVALID_TEMPLATE_NAME, me, root+unqualifiedFileName);
             return null;
         }
 
@@ -195,9 +193,17 @@ public class STGroupDir extends STGroup {
     }
 
     @Override
-    public String getName() { return groupDirName; }
+    public String getName() {
+        return groupDirName;
+    }
+
     @Override
-    public String getFileName() { return root.getFile(); }
+    public String getFileName() {
+        return root.getFile();
+    }
+
     @Override
-    public URL getRootDirURL() { return root; }
+    public URL getRootDirURL() {
+        return root;
+    }
 }

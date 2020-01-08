@@ -35,15 +35,21 @@ import org.stringtemplate.v4.compiler.GroupLexer;
 import org.stringtemplate.v4.compiler.GroupParser;
 import org.stringtemplate.v4.misc.ErrorType;
 
-/** A group derived from a string not a file or directory. */
+/**
+ * A group derived from a string not a file or directory.
+ */
 public class STGroupString extends STGroup {
-    public String sourceName;
-    public String text;
+    public    String  sourceName;
+    public    String  text;
     protected boolean alreadyLoaded = false;
 
-    public STGroupString(String text) { this("<string>", text, '<', '>'); }
+    public STGroupString(String text) {
+        this("<string>", text, '<', '>');
+    }
 
-    public STGroupString(String sourceName, String text) { this(sourceName, text, '<', '>'); }
+    public STGroupString(String sourceName, String text) {
+        this(sourceName, text, '<', '>');
+    }
 
     public STGroupString(String sourceName, String text, char delimiterStartChar, char delimiterStopChar) {
         super(delimiterStartChar, delimiterStopChar);
@@ -77,7 +83,7 @@ public class STGroupString extends STGroup {
 
     @Override
     public synchronized void load() {
-        if (alreadyLoaded) {
+        if ( alreadyLoaded ) {
             return;
         }
         alreadyLoaded = true;
@@ -98,5 +104,7 @@ public class STGroupString extends STGroup {
     }
 
     @Override
-    public String getFileName() { return "<string>"; }
+    public String getFileName() {
+        return "<string>";
+    }
 }
