@@ -11,24 +11,24 @@ import static org.junit.Assert.assertEquals;
 import java.util.TreeMap;
 
 public class TestModelAdaptors extends BaseTest {
-    static class UserAdaptor implements ModelAdaptor {
+    static class UserAdaptor implements ModelAdaptor<User> {
         @Override
-        public Object getProperty(Interpreter interp, ST self, Object o, Object property, String propertyName)
+        public Object getProperty(Interpreter interp, ST self, User model, Object property, String propertyName)
             throws STNoSuchPropertyException
         {
             if ( propertyName.equals("id") ) {
-	            return ((User)o).id;
+	            return model.id;
             }
             if ( propertyName.equals("name") ) {
-	            return ((User)o).getName();
+	            return model.getName();
             }
-            throw new STNoSuchPropertyException(null, o, "User."+propertyName);
+            throw new STNoSuchPropertyException(null, model, "User."+propertyName);
         }
     }
 
-    static class UserAdaptorConst implements ModelAdaptor {
+    static class UserAdaptorConst implements ModelAdaptor<User> {
         @Override
-        public Object getProperty(Interpreter interp, ST self, Object o, Object property, String propertyName)
+        public Object getProperty(Interpreter interp, ST self, User model, Object property, String propertyName)
             throws STNoSuchPropertyException
         {
             if ( propertyName.equals("id") ) {
@@ -37,7 +37,7 @@ public class TestModelAdaptors extends BaseTest {
             if ( propertyName.equals("name") ) {
 	            return "const name value";
             }
-            throw new STNoSuchPropertyException(null, o, "User."+propertyName);
+            throw new STNoSuchPropertyException(null, model, "User."+propertyName);
         }
     }
 
